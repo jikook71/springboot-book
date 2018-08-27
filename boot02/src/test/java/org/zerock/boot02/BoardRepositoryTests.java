@@ -7,13 +7,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.zerock.boot02.domain.Board;
+import org.zerock.boot02.domain.NotFoundEntity;
 import org.zerock.boot02.persistence.BoardRepository;
 
 import java.util.List;
-import java.util.function.Predicate;
-import java.util.stream.Collectors;
 import java.util.Optional;
-import java.util.function.Predicate;
 import java.util.stream.Stream;
 
 @RunWith(SpringRunner.class)
@@ -46,10 +44,33 @@ public class BoardRepositoryTests {
     @Test
     public void testRead() {
 
-        List<Board> list = boardRepo.findAll();
+        Iterable<Board> list = boardRepo.findAll();
         //log.info(board.get().getTitle());
 
         log.info(String.valueOf(list));
+    }
+
+    @Test
+    public void testUpdate() {
+
+        Board board = boardRepo.findById(133L)
+                .orElseThrow(() -> new NotFoundEntity(1L));
+
+        log.info(board.getTitle());
+
+        /*
+        Optional<Board> board = boardRepo.findById(1L);
+        if (board.isPresent()){
+            Board oldBoard = board.get();
+            oldBoard.setTitle("수정된 제목입니다.");
+
+            boardRepo.save(oldBoard);
+        }
+        else{
+            // alternative processing....
+        }
+        */
+
     }
 
 }
